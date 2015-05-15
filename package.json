@@ -1,0 +1,38 @@
+{
+  "name": "clone_redmine_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "npm run-script regulp && xterm -e 'iojs --debug-brk lib/index.js' & xterm -e 'iojs /home/costa/.nvm/versions/io.js/v1.8.1/bin/node-inspector'& chromium http://127.0.0.1:8080/debug?ws=127.0.0.1:8080&port=5858 &",
+    "debug_stop": "kill $(pgrep -f 'iojs --debug-brk'); kill $(pgrep chromium)",
+    "gulp": "xterm -e mon gulp &",
+    "termdev": "xterm -e nodemon lib/index.js & npm run-script gulp",
+    "dev": "npm run-script docker_start && npm run-script termdev",
+    "dev_stop": "npm run-script docker_stop & killall mon gulp node",
+    "docker_stop": "npm run-script stop_spreme && npm run-script stop_pg",
+    "stop_spreme": "docker ps | grep -v pg_spreme | grep spreme && docker stop spreme; true",
+    "stop_pg": "docker ps | grep pg_spreme && docker stop pg_spreme_20150506; true",
+    "docker_start": "npm run-script docker_stop; docker ps | grep spreme || docker start pg_spreme_20150506 spreme;sleep 20; npm run-script refresh",
+    "refresh": "touch lib/index.es",
+    "regulp": "killall mon gulp; npm run-script gulp"
+  },
+  "keywords": [],
+  "author": "Costantino Giuliodori (ilkosta)",
+  "license": "ISC",
+  "dependencies": {
+    "promised-redmine": "^0.2.11",
+    "winston": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel": "^5.1.13",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-debug": "^2.0.1",
+    "gulp-jshint": "^1.10.0",
+    "gulp-rename": "^1.2.2",
+    "jshint-stylish": "^1.0.2",
+    "nodemon": "^1.3.7"
+  }
+}
